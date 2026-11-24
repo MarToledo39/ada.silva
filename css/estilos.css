@@ -845,7 +845,10 @@ a:hover { text-decoration-thickness: 2px; }
   .mosaico__vertical { width: min(100%, 22rem); }
   .ficha--mosaico .ficha__datos { flex-wrap: wrap; }
 
-  .ficha--grupo { --ancho-mini: 150px; }
+  /* Otras obras en celular: mitad foto, mitad texto, en cualquier ancho */
+  .obra-mini { gap: 14px; }
+  .obra-mini .marco { width: calc(50% - 7px); }
+  .obra-mini__info { flex: 1 1 0; }
   .grupo { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .obra-mini .ficha__datos > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
 
