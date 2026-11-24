@@ -508,15 +508,18 @@ a:hover { text-decoration-thickness: 2px; }
 .ficha--en-columna .ficha__datos { flex-wrap: wrap; }
 
 /* --- Otras obras: las cuatro juntas en una página, en una grilla de dos por dos --- */
-.ficha--grupo { --alto-mini: clamp(110px, 24vh, 240px); }
+/* Todas las fotos tienen el mismo ancho (con su proporción real, sin recorte):
+   así, en cada columna, los textos quedan alineados uno debajo del otro. */
+.ficha--grupo { --ancho-mini: clamp(120px, 25vh, 340px); }
 .grupo {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(24px, 4.5vh, 56px) clamp(24px, 3vw, 56px);
+  gap: clamp(18px, 4vh, 56px) clamp(24px, 3vw, 56px);
+  align-items: start;
 }
 .obra-mini { container: obra / inline-size; display: flex; align-items: flex-start; gap: clamp(14px, 1.6vw, 24px); min-width: 0; }
 /* La foto define su ancho y la altura sale de su proporción: nunca se recorta */
-.obra-mini .marco { flex: none; width: min(52%, calc(var(--alto-mini) * var(--ratio))); aspect-ratio: var(--proporcion); }
+.obra-mini .marco { flex: none; width: min(46%, var(--ancho-mini)); aspect-ratio: var(--proporcion); }
 .obra-mini__info { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .obra-mini__titulo {
   font-family: var(--f-titulo);
@@ -531,8 +534,8 @@ a:hover { text-decoration-thickness: 2px; }
 .obra-mini .ficha__datos > div { grid-template-columns: 5.6rem minmax(0, 1fr); gap: 8px; }
 .obra-mini .etiqueta { font-size: 0.6875rem; }
 /* Celda angosta: foto más chica y cada dato con su etiqueta arriba */
-@container obra (max-width: 500px) {
-  .obra-mini .marco { width: min(40%, calc(var(--alto-mini) * var(--ratio))); }
+@container obra (max-width: 380px) {
+  .obra-mini .marco { width: min(40%, var(--ancho-mini)); }
   .obra-mini .ficha__datos > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 
@@ -820,6 +823,10 @@ a:hover { text-decoration-thickness: 2px; }
   .ficha__desc { font-size: 0.875rem; line-height: 1.5; }
   .grupo { row-gap: 20px; }
 }
+@media (min-width: 768px) and (max-height: 640px) {
+  .ficha--grupo { --pad-ficha: 10px; }
+  .grupo { row-gap: 8px; }
+}
 
 /* ---------- Celular ---------- */
 
@@ -838,7 +845,7 @@ a:hover { text-decoration-thickness: 2px; }
   .mosaico__vertical { width: min(100%, 22rem); }
   .ficha--mosaico .ficha__datos { flex-wrap: wrap; }
 
-  .ficha--grupo { --alto-mini: 112px; }
+  .ficha--grupo { --ancho-mini: 150px; }
   .grupo { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .obra-mini .ficha__datos > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
 
