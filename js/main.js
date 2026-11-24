@@ -33,7 +33,6 @@
     barra: $(".trabajos__barra"),
     fichas: $$(".ficha"),
     obras: $$(".obra"),
-    carrusel: $(".carrusel"),
     habilidades: $(".habilidades"),
     habPista: $(".habilidades__pista"),
     habItems: $$(".habilidad"),
@@ -80,35 +79,41 @@
     v.replaceChildren(f);
   });
 
-  /* ---------- Fotos: tres filas de carrusel en loop ---------- */
+  /* ---------- Carruseles: la galería (tres filas) y el carrete de cada obra (una fila) ---------- */
   /* Cada fila avanza sola (JS, no CSS) para poder arrastrarla: con el mouse, con el dedo
      o con el desliz lateral del trackpad. Se frena al pasar el mouse o al enfocarla.
      Tocar una foto la abre en grande; tocar de nuevo la cierra y la fila sigue corriendo. */
 
-  var FILAS = 3;
-  var VELOCIDADES = [42, 54, 36]; // px por segundo, una por fila
+  var VELOCIDADES = [42, 54, 36]; // px por segundo, una por fila de la galería
   var filas = [];
-  var estadoCarrusel = { hover: false, foco: false, visor: false };
+  var cajas = [];
+  var estadoCarrusel = { visor: false };
 
   // Las fotos vienen en una sola lista y se reparten en bloques, en orden:
-  // con 19 fotos, la fila 1 lleva de la 1 a la 7; la 2, de la 8 a la 13; la 3, de la 14 a la 19.
-  (function armarFilas() {
-    var fuente = el.carrusel && $(".carrusel__fotos", el.carrusel);
+  // con 19 fotos y tres filas, la fila 1 lleva de la 1 a la 7; la 2, de la 8 a la 13; la 3, de la 14 a la 19.
+  $$(".carrusel").forEach(function (cont) {
+    var fuente = $(".carrusel__fotos", cont);
     if (!fuente) return;
+    var caja = { el: cont, hover: false, foco: false, filas: [] };
+    cajas.push(caja);
     var fotos = Array.prototype.slice.call(fuente.children);
-    var cantidad = Math.min(FILAS, fotos.length);
+    var cantidad = Math.max(1, Math.min(parseInt(cont.dataset.filas, 10) || 1, fotos.length));
+    var velocidadPropia = parseFloat(cont.dataset.velocidad);
     for (var k = 0; k < cantidad; k++) {
       var fila = document.createElement("div");
       fila.className = "carrusel__fila";
       var pista = document.createElement("ul");
       pista.className = "carrusel__pista";
       fila.appendChild(pista);
-      el.carrusel.appendChild(fila);
-      filas.push({ fila: fila, pista: pista, originales: [], velocidad: VELOCIDADES[k % VELOCIDADES.length],
-                   x: 0, periodo: 0, inercia: 0, arrastre: null });
+      cont.appendChild(fila);
+      var f = { caja: caja, fila: fila, pista: pista, originales: [],
+                velocidad: velocidadPropia || VELOCIDADES[k % VELOCIDADES.length],
+                x: 0, periodo: 0, inercia: 0, arrastre: null };
+      caja.filas.push(f);
+      filas.push(f);
     }
     var porFila = Math.floor(fotos.length / cantidad), sobran = fotos.length % cantidad, i = 0;
-    filas.forEach(function (f, k) {
+    caja.filas.forEach(function (f, k) {
       var cuantas = porFila + (k < sobran ? 1 : 0);
       fotos.slice(i, i + cuantas).forEach(function (li) {
         f.originales.push(li);
@@ -117,7 +122,7 @@
       i += cuantas;
     });
     fuente.remove();
-  })();
+  });
 
   function copiar(li) {
     var c = li.cloneNode(true);
@@ -158,9 +163,9 @@
   function avanzar(t) {
     var dt = ultimoCuadro ? Math.min(0.05, (t - ultimoCuadro) / 1000) : 0;
     ultimoCuadro = t;
-    var quieto = estadoCarrusel.hover || estadoCarrusel.foco || estadoCarrusel.visor;
     filas.forEach(function (f) {
       if (!f.periodo || f.arrastre) return;
+      var quieto = f.caja.hover || f.caja.foco || estadoCarrusel.visor;
       if (Math.abs(f.inercia) > 4) {
         f.x += f.inercia * dt;
         f.inercia *= Math.pow(0.04, dt); // la inercia se apaga en menos de un segundo
@@ -175,23 +180,42 @@
   }
   if (filas.length) requestAnimationFrame(avanzar);
 
-  // Frenar al pasar el mouse o al enfocar con teclado.
-  if (el.carrusel) {
-    el.carrusel.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") estadoCarrusel.hover = true; });
-    el.carrusel.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") estadoCarrusel.hover = false; });
+  var ignorarClick = false;
+  cajas.forEach(function (caja) {
+    var cont = caja.el;
+    // Frenar al pasar el mouse o al enfocar con teclado.
+    cont.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") caja.hover = true; });
+    cont.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") caja.hover = false; });
     // Solo frena el foco de teclado: el que vuelve a la foto al cerrar el visor con el mouse no la frena.
-    el.carrusel.addEventListener("focusin", function (e) {
+    cont.addEventListener("focusin", function (e) {
       var teclado = true;
       try { teclado = e.target.matches(":focus-visible"); } catch (err) { /* navegador viejo */ }
-      estadoCarrusel.foco = teclado;
+      caja.foco = teclado;
     });
-    el.carrusel.addEventListener("focusout", function (e) {
-      if (!el.carrusel.contains(e.relatedTarget)) estadoCarrusel.foco = false;
+    cont.addEventListener("focusout", function (e) {
+      if (!cont.contains(e.relatedTarget)) caja.foco = false;
     });
-  }
+    // Desliz lateral del trackpad (o rueda horizontal): mueve la fila que está debajo del cursor.
+    cont.addEventListener("wheel", function (e) {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // el desliz vertical sigue bajando la página
+      var filaEl = e.target.closest(".carrusel__fila");
+      var f = caja.filas.filter(function (x) { return x.fila === filaEl; })[0];
+      if (!f || !f.periodo) return;
+      e.preventDefault();
+      f.inercia = 0;
+      f.x -= e.deltaX;
+      envolver(f);
+      f.pista.style.transform = "translate3d(" + f.x.toFixed(2) + "px,0,0)";
+    }, { passive: false });
+    // Tocar una foto la abre en grande.
+    cont.addEventListener("click", function (e) {
+      var boton = e.target.closest(".carrusel__boton");
+      if (!boton || ignorarClick) return;
+      abrirVisor(boton);
+    });
+  });
 
   // Arrastrar una fila: con el mouse o con el dedo. Un toque sin arrastre abre la foto.
-  var ignorarClick = false;
   filas.forEach(function (f) {
     f.fila.addEventListener("pointerdown", function (e) {
       if (!f.periodo || (e.pointerType === "mouse" && e.button !== 0)) return;
@@ -229,21 +253,6 @@
     f.fila.addEventListener("pointerup", soltar);
     f.fila.addEventListener("pointercancel", soltar);
   });
-
-  // Desliz lateral del trackpad (o rueda horizontal): mueve la fila que está debajo del cursor.
-  if (el.carrusel) {
-    el.carrusel.addEventListener("wheel", function (e) {
-      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // el desliz vertical sigue bajando la página
-      var filaEl = e.target.closest(".carrusel__fila");
-      var f = filas.filter(function (x) { return x.fila === filaEl; })[0];
-      if (!f || !f.periodo) return;
-      e.preventDefault();
-      f.inercia = 0;
-      f.x -= e.deltaX;
-      envolver(f);
-      f.pista.style.transform = "translate3d(" + f.x.toFixed(2) + "px,0,0)";
-    }, { passive: false });
-  }
 
   /* ---------- Visor: la foto en grande ---------- */
 
@@ -314,13 +323,6 @@
     }
   }
 
-  if (el.carrusel) {
-    el.carrusel.addEventListener("click", function (e) {
-      var boton = e.target.closest(".carrusel__boton");
-      if (!boton || ignorarClick) return;
-      abrirVisor(boton);
-    });
-  }
   visor.addEventListener("click", cerrarVisor); // tocar en cualquier lado cierra
   document.addEventListener("keydown", function (e) {
     if (visor.hidden) return;
@@ -366,7 +368,28 @@
   function preparar() {
     // El nombre de la portada y la palabra del footer tienen tamaño fijo por CSS.
 
-    // La ranura de los roles mide lo mismo que los roles ya achicados (pueden ocupar dos líneas).
+    // Los roles van siempre en una sola línea y nunca más anchos que la pantalla:
+    // si no entran, se achica la letra. Lo mismo al aterrizar en la bio.
+    el.roles.style.fontSize = "";
+    el.ranuraRoles.style.fontSize = "";
+    var fsRoles = parseFloat(getComputedStyle(el.roles).fontSize);
+    var sep = fsRoles * 1.82; // el cuadradito del primer rol queda recortado
+    var anchoRoles = el.roles.scrollWidth - sep;
+    var disponible = el.rolesCaja.clientWidth;
+    if (anchoRoles > disponible) {
+      fsRoles = fsRoles * disponible / anchoRoles * 0.99;
+      el.roles.style.fontSize = fsRoles.toFixed(2) + "px";
+      anchoRoles = el.roles.scrollWidth - fsRoles * 1.82;
+    }
+    if (el.ranuraRoles.clientWidth) {
+      var fsRanura = parseFloat(getComputedStyle(el.ranuraRoles).fontSize);
+      var anchoAterriza = anchoRoles * fsRanura / fsRoles;
+      if (anchoAterriza > el.ranuraRoles.clientWidth) {
+        el.ranuraRoles.style.fontSize = (fsRanura * el.ranuraRoles.clientWidth / anchoAterriza * 0.99).toFixed(2) + "px";
+      }
+    }
+
+    // La ranura de los roles mide lo mismo que los roles ya achicados.
     var escalaRoles = parseFloat(getComputedStyle(el.ranuraRoles).fontSize) / parseFloat(getComputedStyle(el.roles).fontSize);
     el.ranuraRoles.style.height = (el.roles.offsetHeight * escalaRoles).toFixed(1) + "px";
 
@@ -391,32 +414,55 @@
       raiz.style.removeProperty("--alto-pie");
     }
 
-    // Fichas con mosaico. La foto grande ocupa todo el alto de la página y todas las fotos se apoyan
-    // en el piso. La fila de horizontales crece hasta llenar el lugar que dejan los datos.
-    // Si la fila ya no entra, se saca y queda solo la foto grande; si tampoco entran los datos
-    // al lado, la foto grande pasa arriba y los datos abajo.
+    // Fichas con carrete (Desafío a la noche y Teoría del derrumbe).
+    // En computadora la página entra entera, sin scroll: foto grande y datos arriba, carrete abajo.
+    // El carrete arranca en su alto máximo y se achica hasta su mínimo si hace falta lugar para los datos.
+    // Si ni así entran los datos al lado de la foto (o la foto quedaría demasiado chica), la disposición
+    // pasa a una columna: foto, datos y carrete, con la foto lo más grande que permita la pantalla.
     $$(".ficha--mosaico").forEach(function (f) {
-      var fila = $(".mosaico__fila", f), info = $(".ficha__info", f), lado = $(".ficha__lado", f);
-      if (!fila || !info || !lado) return;
-      f.classList.remove("ficha--sin-fila", "ficha--en-columna");
-      fila.style.removeProperty("--alto-fila");
+      var cuerpo = $(".mosaico__cuerpo", f), foto = $(".mosaico__vertical", f),
+          info = $(".ficha__info", f), carr = $(".carrusel--obra", f);
+      if (!cuerpo || !foto || !info) return;
+      f.classList.remove("ficha--en-columna");
+      f.style.removeProperty("--alto-foto-obra");
+      f.style.removeProperty("--alto-carrete");
       if (window.innerWidth < 768) return; // en celular la disposición la resuelve el CSS
-      var cs = getComputedStyle(f), csFila = getComputedStyle(fila);
-      var util = alto() - el.barra.offsetHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-      if (lado.clientWidth < 300) { f.classList.add("ficha--en-columna"); return; }
-      var hueco = parseFloat(getComputedStyle(lado).rowGap) || 0;
-      var suma = parseFloat(csFila.getPropertyValue("--suma")) || 3;
-      var n = parseFloat(csFila.getPropertyValue("--n")) || 2;
-      var huecoFila = parseFloat(csFila.columnGap) || 0;
-      var infoAlto = info.offsetHeight;
-      var disponible = util - infoAlto - hueco;
-      var porAncho = (lado.clientWidth - huecoFila * (n - 1)) / suma;
-      var h = Math.min(disponible, porAncho, alto() * 0.42);
-      if (h < 90) {
-        f.classList.add(infoAlto <= util ? "ficha--sin-fila" : "ficha--en-columna");
-        return;
+      var cs = getComputedStyle(f);
+      var hueco = parseFloat(cs.rowGap) || 0;
+      var util = alto() - el.barra.offsetHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - hueco - f.clientTop;
+      var ratio = parseFloat(getComputedStyle(foto).getPropertyValue("--ratio")) || 0.66;
+      var maxC = Math.min(184, Math.max(96, alto() * 0.17)), minC = 84;
+      var MIN_FOTO = 300, MIN_LADO = 360;
+      var colGap = parseFloat(getComputedStyle(cuerpo).columnGap) || 0;
+      var elegido = null;
+      function probar(p, hc) {
+        if (cuerpo.clientWidth - p * ratio - colGap < MIN_LADO) return false;
+        f.style.setProperty("--alto-foto-obra", Math.floor(p) + "px");
+        f.style.setProperty("--alto-carrete", Math.floor(hc) + "px");
+        return info.offsetHeight <= util - hc;
       }
-      fila.style.setProperty("--alto-fila", h.toFixed(1) + "px");
+      // 1 · La foto a todo el alto; el carrete se achica si los datos necesitan lugar.
+      for (var hc = maxC; hc >= minC && elegido === null; hc -= 6) {
+        var p = util - hc;
+        if (p < MIN_FOTO) break;
+        if (probar(p, hc) && info.offsetHeight <= Math.floor(p)) elegido = hc;
+      }
+      // 2 · Si no alcanza, la foto se achica un poco (nunca por debajo del mínimo) para dar más ancho a los datos.
+      for (var p2 = util - minC; p2 >= MIN_FOTO && elegido === null; p2 -= 12) {
+        for (var hc2 = Math.min(maxC, util - p2); hc2 >= minC; hc2 -= 6) {
+          if (probar(p2, hc2)) { elegido = hc2; break; }
+        }
+      }
+      if (elegido !== null) return;
+      // Una columna: foto arriba, datos y carrete abajo. La foto se achica para que todo entre,
+      // pero nunca por debajo de un mínimo; si no entra, la página se recorre con scroll.
+      f.classList.add("ficha--en-columna");
+      f.style.setProperty("--alto-carrete", maxC.toFixed(1) + "px");
+      f.style.removeProperty("--alto-foto-obra");
+      var huecoCol = parseFloat(getComputedStyle(cuerpo).rowGap) || 0;
+      var resto = util - maxC - info.offsetHeight - huecoCol;
+      var tope = Math.min(26 * 16 / ratio, cuerpo.clientWidth / ratio);
+      f.style.setProperty("--alto-foto-obra", Math.max(260, Math.min(tope, resto)).toFixed(1) + "px");
     });
 
     // Fichas de obras: si una no entra en la pantalla, se pega recién cuando se terminó de ver.

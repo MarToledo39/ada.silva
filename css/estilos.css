@@ -284,10 +284,11 @@ a:hover { text-decoration-thickness: 2px; }
   width: fit-content;
   max-width: calc(100% + var(--sep));
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* siempre en una línea: si no entra, JS achica la letra */
+  white-space: nowrap;
   align-items: center;
   /* Cada rol lleva su cuadradito adelante. El bloque se corre a la izquierda y se recorta ese ancho:
-     así nunca queda un cuadradito al principio de una línea. */
+     así el primer rol no arranca con un cuadradito. */
   margin-left: calc(var(--sep) * -1);
   clip-path: inset(0 0 0 var(--sep));
   font-size: clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
@@ -452,31 +453,34 @@ a:hover { text-decoration-thickness: 2px; }
 .ficha__link { font-size: var(--t-chico); }
 
 /* --- Obras con ficha completa (una página cada una) ---
-   Foto vertical grande a la izquierda, a todo el alto de la tarjeta.
-   A la derecha, los datos arriba y una fila de fotos horizontales abajo.
+   Arriba, la foto vertical grande y los datos al lado. Abajo, el carrete con el resto de las fotos,
+   que corre solo como la galería. En computadora la página entra entera en la pantalla:
+   JS ajusta el alto de la foto (--alto-foto-obra) y del carrete (--alto-carrete).
    Ninguna foto cambia de proporción: se ven enteras. */
 .ficha--mosaico {
-  --alto-util: calc(var(--alto) - var(--barra) - 2 * var(--pad-ficha));
-  --alto-fila: clamp(110px, 22vh, 230px);
+  --alto-carrete: clamp(96px, 17vh, 184px);
+  --hueco-carrete: clamp(16px, 2.6vh, 32px);
+  --alto-foto-obra: calc(var(--alto) - var(--barra) - 2 * var(--pad-ficha) - var(--alto-carrete) - var(--hueco-carrete));
+  display: flex;
+  flex-direction: column;
+  gap: var(--hueco-carrete);
+}
+.mosaico__cuerpo {
   display: grid;
   grid-template-columns: auto minmax(0, 56rem);
   justify-content: center; /* si sobra ancho, aparecen márgenes a los costados */
+  align-items: start;
   column-gap: clamp(24px, 3vw, 48px);
+  row-gap: var(--hueco);
+  margin-block: auto; /* si sobra alto (pantallas altas), foto y datos quedan centrados y el carrete abajo */
 }
-/* La foto grande va siempre a todo el alto: toca arriba y abajo */
 .mosaico__vertical {
-  width: calc(var(--alto-util) * var(--ratio));
+  width: calc(var(--alto-foto-obra) * var(--ratio));
+  max-width: 100%;
   aspect-ratio: var(--proporcion);
-  align-self: end;
-}
-.ficha__lado {
-  container: lado / inline-size;
-  display: flex;
-  flex-direction: column;
-  gap: var(--hueco);
-  min-width: 0;
 }
 .ficha--mosaico .ficha__info {
+  container: lado / inline-size;
   display: flex;
   flex-direction: column;
   gap: clamp(12px, 2vh, 22px);
@@ -491,23 +495,16 @@ a:hover { text-decoration-thickness: 2px; }
   .ficha--mosaico .ficha__datos { flex-wrap: wrap; }
 }
 
-/* Fila de fotos: todas a la misma altura (salvo la chica), con su proporción real.
-   --suma es la suma de las proporciones; el ancho se limita para que la fila no pase de --alto-fila. */
-.mosaico__fila {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--hueco);
-  width: min(100%, calc(var(--alto-fila) * var(--suma) + var(--hueco) * (var(--n) - 1)));
-  margin-top: auto;
+/* Carrete de la obra: va de borde a borde de la página, apoyado abajo */
+.carrusel--obra {
+  --alto-foto: var(--alto-carrete);
+  margin-left: calc(max(var(--margen), env(safe-area-inset-left, 0px)) * -1);
+  margin-right: calc(max(var(--margen), env(safe-area-inset-right, 0px)) * -1);
 }
-.mosaico__fila .marco { flex: var(--f) 1 0; min-width: 0; aspect-ratio: var(--proporcion); }
 
-/* Si la fila de horizontales ya no entra, se saca: queda solo la foto grande */
-.ficha--sin-fila .mosaico__fila { display: none; }
-/* Si los datos tampoco entran al lado, la foto grande pasa arriba y los datos abajo */
-.ficha--en-columna { grid-template-columns: minmax(0, 1fr); row-gap: var(--hueco); justify-content: stretch; }
-.ficha--en-columna .mosaico__vertical { width: min(100%, 26rem); align-self: start; }
-.ficha--en-columna .mosaico__fila { display: none; }
+/* Si los datos no entran al lado de la foto, todo pasa a una columna: foto, datos y carrete */
+.ficha--en-columna .mosaico__cuerpo { grid-template-columns: minmax(0, 1fr); justify-content: stretch; }
+.ficha--en-columna .mosaico__vertical { width: min(100%, 26rem, calc(var(--alto-foto-obra) * var(--ratio))); }
 .ficha--en-columna .ficha__datos { flex-wrap: wrap; }
 
 /* --- Otras obras: las cuatro juntas en una página, en una grilla de dos por dos --- */
@@ -785,6 +782,12 @@ a:hover { text-decoration-thickness: 2px; }
 
 .apilado .bloque { position: sticky; top: var(--tope, 0px); }
 
+/* Pausa: cuando una página termina de entrar, queda quieta un tramo de scroll antes de que llegue la siguiente */
+.apilado { --pausa: calc(var(--alto) * 0.4); }
+.apilado .ficha:not(:last-child) { margin-bottom: var(--pausa); }
+.apilado .trabajos__lista::after { content: ""; display: block; height: var(--pausa); }
+.apilado .fotos { margin-bottom: var(--pausa); }
+
 .apilado .trabajos__barra { position: sticky; top: 0; }
 .apilado .ficha {
   position: sticky;
@@ -829,10 +832,10 @@ a:hover { text-decoration-thickness: 2px; }
   .formacion__lista li { grid-template-columns: minmax(0, 1fr); grid-template-areas: "titulo" "lugar" "anios" "detalle"; gap: 2px; }
   .formacion__anios { text-align: left; }
 
-  .ficha--mosaico { grid-template-columns: minmax(0, 1fr); row-gap: var(--hueco); }
+  /* En celular: foto, datos y carrete, uno debajo del otro */
+  .ficha--mosaico { --alto-carrete: clamp(110px, 17vh, 160px); --hueco-carrete: 28px; }
+  .mosaico__cuerpo { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
   .mosaico__vertical { width: min(100%, 22rem); }
-  .mosaico__fila { display: none; } /* en celular queda solo la foto grande */
-  .ficha__lado { gap: 24px; }
   .ficha--mosaico .ficha__datos { flex-wrap: wrap; }
 
   .ficha--grupo { --alto-mini: 112px; }
