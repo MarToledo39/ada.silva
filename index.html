@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ada Silva · Portfolio</title>
+  <meta name="description" content="Portfolio de Ada Silva: creadora escénica, bailarina y docente de movimiento.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<!--
+  CONTENIDO: todo sale de portfolio_ada_silva_contenido.md.
+  [FALTA: …] = dato que todavía no está. No se completa con supuestos.
+-->
+
+<div class="pila">
+
+  <!-- 1 · PORTADA (con header) -->
+  <section id="inicio" class="portada tema-claro">
+    <header class="cabecera">
+      <nav aria-label="Secciones">
+        <!-- Textos del menú: los define Mar. Provisorios. -->
+        <ul class="menu">
+          <li><a href="#bio">Bio</a></li>
+          <li><a href="#obras">Obras</a></li>
+          <li><a href="#fotos">Fotos</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="portada__contenido">
+      <div class="portada__titulo-caja">
+        <h1 class="portada__titulo">Ada Silva</h1>
+      </div>
+      <div class="portada__roles-caja">
+        <!-- Entre los roles van cuadraditos naranjas (detalle decorativo, por CSS). Los lectores de pantalla leen comas. -->
+        <p class="portada__roles"><span class="rol">Creadora escénica</span><span class="rol"><span class="solo-lectores">, </span>Bailarina</span><span class="rol"><span class="solo-lectores">, </span>Docente de movimiento</span></p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+
+    <!-- 2 · BIO -->
+    <section id="bio" class="bio tema-claro bloque" aria-labelledby="bio-titulo">
+      <h2 id="bio-titulo" class="solo-lectores">Bio</h2>
+      <div class="bio__grilla">
+        <!-- Lugar donde aterrizan el título y los roles de la portada al bajar. Vacío a propósito. -->
+        <div class="bio__ranura" aria-hidden="true">
+          <span class="ranura__titulo"></span>
+          <span class="ranura__roles"></span>
+        </div>
+
+        <figure class="bio__foto">
+          <div class="marco" style="--proporcion: 1356 / 2048">
+            <img class="parallax" src="fotos/bio.jpg" width="1356" height="2048" alt="Retrato de Ada Silva, de pelo enrulado rojizo, labios rojos y remera blanca, frente a una ventana de vidrios repartidos.">
+          </div>
+        </figure>
+
+        <div class="bio__texto">
+          <!-- [EJEMPLO] Texto de relleno para ver el tamaño. Se reemplaza entero por la bio que escriba Ada. -->
+          <p class="bio__parrafo revela">Este es un texto de relleno para probar el tamaño de la bio. Ocupa más o menos lo que ocuparía una bio real de tres o cuatro oraciones, escrita en primera persona y con el registro del CV. Acá iría quién soy, cómo llegué a la danza y al movimiento, qué me interesa hoy como creadora escénica y qué busco en cada proyecto. Cuando esté el texto definitivo, se reemplaza este párrafo entero y el efecto de las palabras que aparecen con el scroll sigue funcionando igual.</p>
+
+          <hr class="divisor">
+
+          <div class="formacion">
+            <h3 class="etiqueta">Formación</h3>
+            <div class="formacion__grupo">
+              <h4 class="formacion__subtitulo">Estudios formales</h4>
+              <ul class="formacion__lista">
+                <li><span class="formacion__titulo">Capacitación en Flexibilidad Activa</span><span class="formacion__lugar">UNDEP (Universidad del Deporte), dictada por Andrea Manso</span><span class="formacion__anios">2026</span></li>
+                <li><span class="formacion__titulo">Instructorado de Pilates</span><span class="formacion__lugar">Toulouse Pilates</span><span class="formacion__anios">2025</span><span class="formacion__detalle">Reformer, Mat, Cadillac, Chair, Unidad de Pared y TRX</span></li>
+                <li><span class="formacion__titulo">Licenciatura en Artes Escénicas – Danza</span><span class="formacion__lugar">Universidad Nacional de San Martín</span><span class="formacion__anios">2020–2023</span><span class="formacion__detalle">No finalizada</span></li>
+                <li><span class="formacion__titulo">Licenciatura en Composición Coreográfica</span><span class="formacion__lugar">Universidad Nacional de las Artes</span><span class="formacion__anios">2018–2019</span><span class="formacion__detalle">No finalizada</span></li>
+                <li><span class="formacion__titulo">Intérprete en Danza Clásica y Contemporánea</span><span class="formacion__lugar">Escuela Nacional de Danzas N.º 2 Jorge Donn</span><span class="formacion__anios">2010–2016</span></li>
+              </ul>
+            </div>
+            <div class="formacion__grupo">
+              <h4 class="formacion__subtitulo">Estudios no formales</h4>
+              <ul class="formacion__lista formacion__lista--simple">
+                <li>Capacitación docente en el Centro de Trabajo Corporal Andares, a cargo de Susana Vaccarini y Gerardo Lo Guzzo</li>
+                <li>Formación en actuación con Leticia Coronel</li>
+                <li>Escritura creativa con Leticia Coronel</li>
+                <li>Laboratorio de la luz, seminario intensivo “Principios de la luz aplicada a la práctica artística”, con Valeria Junquera</li>
+                <li>Danza contemporánea con Natalia Mussio</li>
+                <li>Improvisación con Federico Fontán y Quio Binetti</li>
+                <li>Contact con Andrea Fernández</li>
+                <li>Acrobacia aérea y de piso con Luciana Spadafora</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Abre el PDF en una pestaña nueva. Sin atributo download. -->
+          <a class="boton" href="cv/ada-silva-cv.pdf" target="_blank" rel="noopener">Ver mi CV</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · OBRAS. Cada <article class="obra"> es una obra; la numeración se calcula sola. -->
+    <section id="obras" class="trabajos tema-oscuro bloque" aria-labelledby="obras-titulo">
+      <div class="trabajos__barra">
+        <h2 id="obras-titulo" class="titulo-seccion">Obras</h2>
+      </div>
+
+      <div class="trabajos__lista">
+
+        <!-- Obra 1 · Desafío a la noche. Identidad visual propia: el detalle se define con Mar (faltan los recursos de la obra). -->
+        <article class="ficha ficha--mosaico obra ficha--identidad-propia" data-identidad="desafio-a-la-noche" aria-labelledby="obra-1">
+          <div class="marco mosaico__vertical" style="--proporcion: 1356 / 2048; --ratio: 0.6621; --f: 0.6621"><img class="parallax" src="fotos/trabajos/desafio-a-la-noche-1.jpg" width="1356" height="2048" loading="lazy" alt="Intérprete con anteojos negros y ropa negra, en una pose quebrada sobre fondo blanco, con su sombra en la pared."></div>
+          <div class="ficha__lado">
+            <div class="ficha__info">
+              <p class="ficha__numero"><span class="ficha__n"></span><span class="ficha__total"></span></p>
+              <h3 class="ficha__titulo mascara" id="obra-1"><span>DESAFÍO A LA NOCHE</span></h3>
+              <dl class="ficha__datos">
+                <div><dt class="etiqueta">Rol</dt><dd>Codirección · Producción ejecutiva · Intérprete escénica</dd></div>
+                <div><dt class="etiqueta">Funciones</dt><dd><ul class="funciones"><li>El Cable — 2022</li><li>Espacio Savia — 2023</li><li>Cultural Vivo — 2025</li><li>CorteTaza — 2026</li></ul></dd></div>
+              </dl>
+              <p class="ficha__desc">Desafío a la noche es una performance que indaga en la noche como experiencia colectiva e íntima, como espacio de fiesta, desvarío, soledad y encuentro. La obra propone un recorrido físico y sensorial por la exaltación, el vacío y la potencia, a través de una danza rota que se entrelaza con texto y música electrónica.</p>
+              <p class="ficha__link"><a href="https://www.instagram.com/desafioalanoche/" target="_blank" rel="noopener">Instagram de la obra</a></p>
+            </div>
+            <div class="mosaico__fila" style="--suma: 3.0107; --n: 2">
+              <div class="marco" style="--proporcion: 2048 / 1356; --ratio: 1.5103; --f: 1.5103"><img class="parallax" src="fotos/trabajos/desafio-a-la-noche-2.jpg" width="2048" height="1356" loading="lazy" alt="Cuatro intérpretes con anteojos negros y camisa blanca, en fila y en la misma pose agachada."></div>
+              <div class="marco" style="--proporcion: 2048 / 1365; --ratio: 1.5004; --f: 1.5004"><img class="parallax" src="fotos/trabajos/desafio-a-la-noche-3.jpg" width="2048" height="1365" loading="lazy" alt="Cuatro intérpretes con anteojos negros y saco negro, inclinadas en distintas poses sobre fondo blanco."></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Obra 2 · Teoría del derrumbe. La vertical va grande; la vista general del escenario, chica en la esquina de la fila. -->
+        <article class="ficha ficha--mosaico obra" aria-labelledby="obra-2">
+          <div class="marco mosaico__vertical" style="--proporcion: 1696 / 2560; --ratio: 0.6625; --f: 0.6625"><img class="parallax" src="fotos/trabajos/teoria-del-derrumbe-2.jpg" width="1696" height="2560" loading="lazy" alt="Intérprete con bata blanca sostiene en alto un conejo de peluche, junto a un estante lleno de objetos."></div>
+          <div class="ficha__lado">
+            <div class="ficha__info">
+              <p class="ficha__numero"><span class="ficha__n"></span><span class="ficha__total"></span></p>
+              <h3 class="ficha__titulo mascara" id="obra-2"><span>Teoría del derrumbe</span></h3>
+              <dl class="ficha__datos">
+                <div><dt class="etiqueta">Rol</dt><dd>Dirección artística · Producción ejecutiva · Intérprete escénica</dd></div>
+                <div><dt class="etiqueta">Funciones</dt><dd><ul class="funciones"><li>Espacio Savia — 2022</li><li>Teatro El Taller de Omar — 2023</li><li>Teatro Ítaca — 2024</li></ul></dd></div>
+              </dl>
+              <p class="ficha__desc">Teoría del derrumbe es una obra de danza, teatro y manipulación de objetos. Se sumerge en el mundo de lo kitsch a través de la cantidad desmesurada de cosas y la superposición de símbolos, construyendo espacios donde se funden bazares y santuarios. En esta fusión se pone en juego el valor que le damos a las cosas, lo permanente y lo descartable. La obra juega a enaltecer nuestros museos de lo íntimo, construyendo altares de lo propio, haciendo ofrendas a la identidad con el fin de elevar lo pequeño, lo nimio, lo aparentemente irrelevante, reescribiendo así su sentido.</p>
+              <p class="ficha__link"><a href="https://www.instagram.com/derrumbe.obra/" target="_blank" rel="noopener">Instagram de la obra</a></p>
+            </div>
+            <div class="mosaico__fila" style="--suma: 3.9263; --n: 3">
+              <div class="marco" style="--proporcion: 2560 / 1695; --ratio: 1.5103; --f: 1.5103"><img class="parallax" src="fotos/trabajos/teoria-del-derrumbe-3.jpg" width="2560" height="1695" loading="lazy" alt="Tres intérpretes en escena; la del centro, con un kimono rojo, abre los brazos."></div>
+              <div class="marco" style="--proporcion: 2560 / 1695; --ratio: 1.5103; --f: 1.5103"><img class="parallax" src="fotos/trabajos/teoria-del-derrumbe-4.jpg" width="2560" height="1695" loading="lazy" alt="Bajo luz roja, Ada sostiene entre los dientes un papel escrito y unas flores en la mano, mientras otra intérprete se le acerca."></div>
+              <div class="marco mosaico__chica" style="--proporcion: 2560 / 1696; --ratio: 1.5094; --f: 0.9057"><img class="parallax" src="fotos/trabajos/teoria-del-derrumbe-1.jpg" width="2560" height="1696" loading="lazy" alt="Vista general del escenario, con cajas apiladas, un perchero con ropa y objetos desparramados en el piso."></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Otras obras: las cuatro juntas en una misma página. -->
+        <div class="ficha ficha--grupo">
+          <div class="grupo">
+            <article class="obra obra-mini" aria-labelledby="obra-3">
+              <div class="marco" style="--proporcion: 2560 / 1598; --ratio: 1.6020; --f: 1.6020"><img src="fotos/trabajos/el-temblor-y-la-silla.jpg" width="2560" height="1598" loading="lazy" alt="Un grupo grande de performers en las gradas de una sala, con carteles escritos a mano en alto."></div>
+              <div class="obra-mini__info">
+                <p class="ficha__numero"><span class="ficha__n"></span><span class="ficha__total"></span></p>
+                <div class="ficha__cabeza">
+                  <h3 class="obra-mini__titulo mascara" id="obra-3"><span>El temblor y la silla</span></h3>
+                  <p class="ficha__bajada">—⁠de cuando Pina conoció a Sandro⁠—</p>
+                  <p class="ficha__bajada">Concierto Público N.º 7</p>
+                </div>
+                <dl class="ficha__datos">
+                  <div><dt class="etiqueta">Rol</dt><dd>Performer</dd></div>
+                  <div><dt class="etiqueta">Dirección</dt><dd>Hugo Martínez y Yami Seco</dd></div>
+                  <div><dt class="etiqueta">Funciones</dt><dd><ul class="funciones"><li>Teatro Empire — 2026</li></ul></dd></div>
+                </dl>
+              </div>
+            </article>
+            <article class="obra obra-mini" aria-labelledby="obra-4">
+              <div class="marco" style="--proporcion: 2560 / 1707; --ratio: 1.4997; --f: 1.4997"><img src="fotos/trabajos/trashedia.jpg" width="2560" height="1707" loading="lazy" alt="Dos intérpretes en escena: una de pelo enrulado, con vestido dorado y la mano en alto; la otra, con chaleco oscuro."></div>
+              <div class="obra-mini__info">
+                <p class="ficha__numero"><span class="ficha__n"></span><span class="ficha__total"></span></p>
+                <div class="ficha__cabeza">
+                  <h3 class="obra-mini__titulo mascara" id="obra-4"><span>Trashedia</span></h3>
+                </div>
+                <dl class="ficha__datos">
+                  <div><dt class="etiqueta">Rol</dt><dd>Actriz · Bailarina</dd></div>
+                  <div><dt class="etiqueta">Dirección</dt><dd>Leticia Coronel</dd></div>
+                  <div><dt class="etiqueta">Funciones</dt><dd><ul class="funciones"><li>Abasto Social Club — 2024</li></ul></dd></div>
+                </dl>
+              </div>
+            </article>
+            <article class="obra obra-mini" aria-labelledby="obra-5">
+              <div class="marco" style="--proporcion: 1440 / 2560; --ratio: 0.5625; --f: 0.5625"><img src="fotos/trabajos/un-presente.jpg" width="1440" height="2560" loading="lazy" alt="Una bailarina salta en el centro de un galpón, con el público sentado alrededor."></div>
+              <div class="obra-mini__info">
+                <p class="ficha__numero"><span class="ficha__n"></span><span class="ficha__total"></span></p>
+                <div class="ficha__cabeza">
+                  <h3 class="obra-mini__titulo mascara" id="obra-5"><span>Un presente</span></h3>
+                </div>
+                <dl class="ficha__datos">
+                  <div><dt class="etiqueta">Rol</dt><dd>Performer · Bailarina</dd></div>
+                  <div><dt class="etiqueta">Dirección</dt><dd>Leticia Coronel</dd></div>
+                  <div><dt class="etiqueta">Funciones</dt><dd><ul class="funciones"><li>Estudio Los Vidrios — 2024</li></ul></dd></div>
+                </dl>
+              </div>
+            </article>
+            <!-- Es un corto: va el año en lugar de funciones. -->
+            <article class="obra obra-mini" aria-labelledby="obra-6">
+              <div class="marco" style="--proporcion: 2560 / 1707; --ratio: 1.4997; --f: 1.4997"><img src="fotos/trabajos/me-busque-en-la-noche.jpg" width="2560" height="1707" loading="lazy" alt="De noche, una mujer de tapado negro en una vereda iluminada con luz verdosa."></div>
+              <div class="obra-mini__info">
+                <p class="ficha__numero"><span class="ficha__n"></span><span class="ficha__total"></span></p>
+                <div class="ficha__cabeza">
+                  <h3 class="obra-mini__titulo mascara" id="obra-6"><span>Me busqué en la noche</span></h3>
+                </div>
+                <dl class="ficha__datos">
+                  <div><dt class="etiqueta">Rol</dt><dd>Actriz</dd></div>
+                  <div><dt class="etiqueta">Dirección</dt><dd>Ignacio López Cano</dd></div>
+                  <div><dt class="etiqueta">Año</dt><dd>2026</dd></div>
+                </dl>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4 · FOTOS. Una sola lista, en el orden del contenido. El JS la reparte en tres filas, en bloques seguidos. -->
+    <section id="fotos" class="fotos tema-oscuro tono-1 bloque" aria-labelledby="fotos-titulo">
+      <div class="fotos__cabeza">
+        <h2 id="fotos-titulo" class="titulo-seccion">Fotos</h2>
+      </div>
+      <div class="carrusel" role="region" aria-label="Galería de fotos. Se frena al pasar el mouse. Se puede arrastrar de costado. Tocá una foto para verla en grande.">
+        <ul class="carrusel__fotos">
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-01.jpg" width="1086" height="724" loading="lazy" alt="Bailarina en movimiento sobre fondo blanco, con un vestido plisado bordó y los brazos abiertos."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-02.jpg" width="1060" height="1600" loading="lazy" alt="Ada, bajo luz roja, mira un abanico de papel con flores que sostiene frente al pecho."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-03.jpg" width="1600" height="900" loading="lazy" alt="Un grupo numeroso cruza la calle en fila por la senda peatonal, a pleno día."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-04.jpg" width="1280" height="854" loading="lazy" alt="Intérprete con anteojos negros y traje oscuro canta frente a un micrófono."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-05.jpg" width="1600" height="1060" loading="lazy" alt="Bajo luz roja, Ada se arrastra sobre una pila de ropa y mira a cámara."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-06.jpg" width="936" height="1500" loading="lazy" alt="De noche, Ada enciende un cigarrillo apoyada en una pared, junto a una ermita iluminada con una virgen y flores."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-07.jpg" width="1280" height="854" loading="lazy" alt="Figura desenfocada en movimiento, con camisa blanca, bajo luz azul."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-08.jpg" width="1060" height="1600" loading="lazy" alt="Tres intérpretes alrededor de una mesa con muñecos y objetos; dos le ponen broches en la cara a la del centro."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-09.jpg" width="1048" height="1600" loading="lazy" alt="Ada baila bajo luz rosa, con los brazos en alto, pollera blanca y un cuello blanco en punta."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-10.jpg" width="1460" height="822" loading="lazy" alt="Objetos acumulados dentro de un marco dorado: una lata de galletitas, guantes azules, una muñeca, tazas y monedas."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-11.jpg" width="1600" height="1067" loading="lazy" alt="Ada grita con una botella en la mano, junto a un compañero de saco estampado."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-12.jpg" width="1060" height="1600" loading="lazy" alt="Bajo luz roja, una intérprete se saca la remera por la cabeza, con los brazos en alto."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-13.jpg" width="724" height="1086" loading="lazy" alt="Bailarina inclinada hacia un costado en una sala blanca, con un vestido plisado de colores tierra."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-14.jpg" width="1280" height="853" loading="lazy" alt="Tres figuras de traje, desenfocadas en movimiento, frente a un foco de luz verde."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-15.jpg" width="1600" height="1060" loading="lazy" alt="Tres intérpretes entrelazadas sobre una pila de ropa, con una mesa con objetos al fondo."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-16.jpg" width="900" height="1600" loading="lazy" alt="Ada con los brazos en alto, bajo luz azul, contra una pared de ladrillos."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-17.jpg" width="1059" height="1600" loading="lazy" alt="Altar con velas encendidas, un patito de goma, una muñeca y otros objetos sobre telas claras."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-18.jpg" width="712" height="1215" loading="lazy" alt="Primer plano de Ada con los ojos cerrados, entre brazos levantados de otras personas."></button></li>
+          <li><button class="carrusel__boton" type="button"><img src="fotos/galeria/galeria-19.jpg" width="1600" height="1060" loading="lazy" alt="Tres intérpretes se lavan los dientes en escena, bajo luz rosada."></button></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 5 · FOOTER CON CONTACTO -->
+  <footer id="contacto" class="pie tema-oscuro" aria-labelledby="contacto-titulo">
+    <div class="pie__contenido">
+      <h2 id="contacto-titulo" class="titulo-seccion">Contacto</h2>
+
+      <ul class="contacto">
+        <li><a href="https://wa.me/5491133161295" target="_blank" rel="noopener"><span class="etiqueta">WhatsApp</span><span class="contacto__dato">11 3316-1295</span></a></li>
+        <li><a href="mailto:adasilvaroit@gmail.com"><span class="etiqueta">Mail</span><span class="contacto__dato">adasilvaroit@gmail.com</span></a></li>
+        <!-- Cómo se muestra el Instagram es una decisión abierta: el usuario tal cual o la palabra "Instagram". -->
+        <li><a href="https://www.instagram.com/hada___________/" target="_blank" rel="noopener"><span class="etiqueta">Instagram</span><span class="contacto__dato">@hada___________</span></a></li>
+      </ul>
+
+      <a class="boton" href="cv/ada-silva-cv.pdf" target="_blank" rel="noopener">Ver mi CV</a>
+
+      <hr class="divisor">
+
+      <div class="pie__creditos">
+        <p>© 2026 Ada Silva</p>
+        <p>Diseño web: Mar Toledo</p>
+      </div>
+    </div>
+
+    <p class="pie__palabra">Muchas gracias</p>
+  </footer>
+
+</div>
+
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="vendor/gsap/SplitText.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
