@@ -369,7 +369,8 @@ a:hover { text-decoration-thickness: 2px; }
 
 .formacion { display: flex; flex-direction: column; gap: 28px; }
 .formacion__grupo { display: flex; flex-direction: column; gap: 10px; }
-.formacion__subtitulo { font-size: var(--t-chico); font-weight: 500; color: var(--tenue); }
+.formacion > .etiqueta { font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem); }
+.formacion__subtitulo { font-size: clamp(1rem, 0.94rem + 0.25vw, 1.1875rem); font-weight: 500; color: var(--tenue); }
 .formacion__lista { display: flex; flex-direction: column; }
 .formacion__lista li {
   display: grid;
